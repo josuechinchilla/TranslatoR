@@ -1,0 +1,10 @@
+^app\.R$
+^rsconnect$
+^\.Rproj\.user$
+^.*\.Rproj$
+^\.Rhistory$
+^\.RData$
+^dev$
+^README\.md$
+^\.github$
+^\.DS_Store$

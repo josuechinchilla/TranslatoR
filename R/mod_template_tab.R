@@ -1,0 +1,169 @@
+# ============================================================================
+# Shared "template tab" module.
+#
+# Every import-template tab (Samples, Experimental, Ontology, Germplasm) has the
+# identical structure and differs only by its template configuration, so the
+# per-tab modules (mod_sample, mod_experimental, ...) are thin wrappers around
+# this shared implementation.
+# ============================================================================
+
+#' Template-tab UI
+#'
+#' @param id Module id.
+#' @return A `uiOutput` placeholder; the localized body is rendered server-side
+#'   so it reacts to the app-level language toggle.
+#' @importFrom shiny NS uiOutput
+#' @noRd
+template_tab_ui <- function(id) {
+  ns <- shiny::NS(id)
+  shiny::uiOutput(ns("body"))
+}
+
+#' Template-tab server
+#'
+#' @param id Module id.
+#' @param template One element of [TEMPLATES] (id, name_en/es, file, fields...).
+#' @param lang A reactive returning the active language ("EN" or "ES").
+#' @importFrom shiny moduleServer reactiveVal observeEvent req renderUI tagList
+#'   tags div downloadButton fileInput radioButtons tableOutput renderTable
+#'   downloadHandler validate need setNames
+#' @noRd
+template_tab_server <- function(id, template, lang) {
+  shiny::moduleServer(id, function(input, output, session) {
+    ns     <- session$ns
+    fields <- template$fields
+    tr     <- function(key) L[[lang()]][[key]]
+
+    # Persistent upload store (survives language re-renders of the body).
+    store <- shiny::reactiveVal(NULL)
+    shiny::observeEvent(input$file, {
+      shiny::req(input$file)
+      store(parse_upload(input$file))
+    })
+
+    # Absolute path to a bundled template file in inst/extdata/templates.
+    tmpl_path <- function(fname) app_sys("extdata/templates", fname)
+
+    # -- Localized tab body -------------------------------------------------
+    output$body <- shiny::renderUI({
+      nm  <- if (lang() == "EN") template$name_en else template$name_es
+      cur <- store()
+      loaded_txt <- if (!is.null(cur) && !is.null(cur$fname)) {
+        shiny::tags$p(class = "hint", shiny::tags$b(tr("loaded")), " ", cur$fname)
+      } else {
+        shiny::tags$p(class = "hint", tr("none"))
+      }
+      shiny::tagList(
+        shiny::tags$h3(nm, style = "font-weight:normal; margin-top:12px;"),
+        # --- Blank template downloads ---
+        shiny::div(
+          class = "section-card",
+          shiny::tags$h4(tr("blank_hdr"), style = "margin-top:0;"),
+          shiny::tags$p(tr("blank_note"), class = "hint"),
+          shiny::div(
+            style = "display:flex; gap:10px; flex-wrap:wrap;",
+            shiny::downloadButton(ns("blank_en"), tr("blank_en")),
+            shiny::downloadButton(ns("blank_es"), tr("blank_es"))
+          )
+        ),
+        # --- Field guide (collapsible; collapsed by default) ---
+        shiny::tags$details(
+          class = "section-card",
+          shiny::tags$summary(tr("guide_hdr")),
+          shiny::tags$p(tr("guide_note"), class = "hint"),
+          shiny::tableOutput(ns("guide"))
+        ),
+        # --- Converter ---
+        shiny::div(
+          class = "section-card",
+          shiny::tags$h4(tr("conv_hdr"), style = "margin-top:0;"),
+          shiny::radioButtons(
+            ns("dir"), tr("dir_label"),
+            choices  = stats::setNames(c("es2en", "en2es"),
+                                       c(tr("dir_es2en"), tr("dir_en2es"))),
+            selected = "es2en"
+          ),
+          shiny::fileInput(
+            ns("file"), tr("upload_label"),
+            accept      = c(".xls", ".xlsx", ".csv"),
+            buttonLabel = tr("upload_btn"),
+            placeholder = tr("upload_ph")
+          ),
+          shiny::tags$p(tr("only_note"), class = "hint"),
+          loaded_txt,
+          shiny::tags$h4(tr("prev_hdr")),
+          shiny::tableOutput(ns("preview")),
+          shiny::downloadButton(ns("dl"), tr("download"), class = "btn btn-primary")
+        )
+      )
+    })
+
+    # -- Field guide table (bilingual) --------------------------------------
+    output$guide <- shiny::renderTable({
+      d <- data.frame(
+        a = fields$en, b = fields$es,
+        c = if (lang() == "EN") fields$desc_en else fields$desc_es,
+        d = if (lang() == "EN") fields$req_en  else fields$req_es,
+        stringsAsFactors = FALSE)
+      names(d) <- c(tr("col_en"), tr("col_es"), tr("col_desc"), tr("col_req"))
+      d
+    }, striped = TRUE, bordered = TRUE, rownames = FALSE, na = "")
+
+    # -- Mapping preview ----------------------------------------------------
+    output$preview <- shiny::renderTable({
+      cur <- store()
+      if (is.null(cur) || cur$type == "error") return(NULL)
+      direction <- if (is.null(input$dir)) "es2en" else input$dir
+      dsheet <- find_data_sheet(cur, fields)
+      hdr <- as.character(unlist(cur$sheets[[dsheet]][1, ]))
+      mp <- map_headers(hdr, build_dict(fields, direction))
+      status <- ifelse(mp$matched, tr("st_match"), tr("st_keep"))
+      d <- data.frame(hdr, mp$new, status, stringsAsFactors = FALSE)
+      names(d) <- c(tr("p_orig"), tr("p_new"), tr("p_status"))
+      d
+    }, striped = TRUE, bordered = TRUE, rownames = FALSE, na = "")
+
+    # -- Download the converted file ----------------------------------------
+    output$dl <- shiny::downloadHandler(
+      filename = function() {
+        cur <- store()
+        direction <- if (is.null(input$dir)) "es2en" else input$dir
+        suffix <- if (direction == "es2en") "_EN" else "_ES"
+        base <- if (!is.null(cur) && !is.null(cur$fname)) tools::file_path_sans_ext(cur$fname) else template$file
+        outext <- if (!is.null(cur) && cur$type == "csv") ".csv" else ".xlsx"
+        paste0(base, suffix, outext)
+      },
+      content = function(file) {
+        cur <- store()
+        shiny::validate(shiny::need(!is.null(cur) && cur$type != "error", tr("err_type")))
+        direction <- if (is.null(input$dir)) "es2en" else input$dir
+        sheets <- translate_sheets(cur, fields, direction)
+        if (cur$type == "csv") {
+          utils::write.table(sheets[["Data"]], file, sep = ",", row.names = FALSE,
+                             col.names = FALSE, na = "", qmethod = "double",
+                             fileEncoding = "UTF-8")
+        } else {
+          writexl::write_xlsx(sheets, path = file, col_names = FALSE)
+        }
+      }
+    )
+
+    # -- Blank template downloads -------------------------------------------
+    # English original, served exactly as shipped in inst/extdata/templates.
+    output$blank_en <- shiny::downloadHandler(
+      filename = function() template$file,
+      content  = function(file) file.copy(tmpl_path(template$file), file, overwrite = TRUE)
+    )
+
+    # Spanish .xls copy. Interim version has the Data-sheet headers translated.
+    # To ship a fully translated template, drop a .xls with the same
+    # "<base>_ES.xls" name into inst/extdata/templates - served automatically.
+    output$blank_es <- shiny::downloadHandler(
+      filename = function() paste0(tools::file_path_sans_ext(template$file), "_ES.xls"),
+      content  = function(file) {
+        es <- paste0(tools::file_path_sans_ext(template$file), "_ES.xls")
+        file.copy(tmpl_path(es), file, overwrite = TRUE)
+      }
+    )
+  })
+}

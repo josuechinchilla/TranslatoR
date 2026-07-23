@@ -1,0 +1,137 @@
+/* ── DeltaBreed Style Guide v1.2 palette ── */
+/* Named in the same core / lite / deep manner as the Familia app's custom.css */
+
+:root {
+  /* Purple (primary / brand) */
+  --purple-core:   #753FCD;  /* Button default */
+  --purple-lite:   #EBE4F8;  /* New Term Button (light fill) */
+  --purple-deep:   #602DAE;  /* Proposed New Button Hover */
+  --purple-tint:   #F2EFFB;  /* Program Button & Ontology Term Background */
+  --purple-border: #6B33C6;  /* Program box border */
+
+  /* Teal (accent) */
+  --teal-core: #3FB3B6;      /* Teal */
+  --teal-lite: #EFF9F9;      /* Message Background */
+  --teal-deep: #2D8285;      /* Font on message */
+
+  /* Grey */
+  --grey-core:   #808080;    /* Header row underline */
+  --grey-lite:   #DBDBDB;    /* Row divider, checkboxes, spinner */
+  --grey-deep:   #494949;    /* Left Menu Background */
+  --grey-tab:    #EDEDED;    /* Inactive tab fill */
+  --grey-border: #D2D2D2;    /* Close icon / hairline border */
+  --grey-alt:    #F9F9F9;    /* Alt row highlight & footer background */
+
+  /* Blue (link) */
+  --blue-core: #1A64DD;      /* Link */
+
+  /* Red (error) */
+  --red-core: #DF1659;       /* Error */
+  --red-lite: #DD5985;       /* Delete icon */
+  --red-deep: #A1033F;       /* Check Box Interior (checked) */
+
+  /* Green (success) */
+  --green-core: #1C7B36;     /* Success */
+
+  /* Text */
+  --font-core:  #363636;     /* Font */
+  --font-muted: #6B6B6B;
+
+  /* Surfaces */
+  --card-bg:     #FBFAFE;
+  --card-border: #E6E0F5;
+}
+
+/* ── Base typography ── */
+body { color: var(--font-core); }
+h2 { color: var(--purple-core); }
+h3, h4 { color: var(--font-core); }
+a, a:hover, a:focus { color: var(--blue-core); }
+
+/* ── Top bar & language toggle ── */
+.topbar { display: flex; justify-content: flex-end; align-items: center; margin-bottom: 6px; }
+.logo-header { text-align: left; }
+.lang-toggle { padding-top: 8px; }
+.lang-toggle .shiny-options-group { display: inline-block; }
+.lang-toggle label { font-weight: normal; }
+
+/* ── Tabs ── */
+/* inactive tab - grey background */
+.nav-tabs > li:not(.active) > a {
+  background-color: var(--grey-tab) !important;
+  color: var(--font-muted) !important;
+  border: 1px solid var(--grey-border) !important;
+  font-size: 15px !important;
+}
+/* hover on inactive tab */
+.nav-tabs > li:not(.active) > a:hover {
+  background-color: var(--purple-tint) !important;
+  color: var(--purple-core) !important;
+}
+/* active tab - DeltaBreed purple */
+.nav-tabs > li.active > a,
+.nav-tabs > li.active > a:hover,
+.nav-tabs > li.active > a:focus {
+  background-color: var(--purple-core) !important;
+  color: #fff !important;
+  border: 1px solid var(--purple-core) !important;
+  border-bottom-color: var(--purple-core) !important;
+  font-size: 15px !important;
+}
+
+/* ── Section cards ── */
+.section-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 6px;
+  padding: 14px 18px;
+  margin-top: 14px;
+}
+/* collapsible section header */
+details.section-card > summary {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--font-core);
+  cursor: pointer;
+  outline: none;
+  list-style-position: inside;
+}
+details.section-card > summary:hover { color: var(--purple-core); }
+details.section-card[open] > summary { margin-bottom: 10px; }
+
+/* ── Tables (field guide & mapping preview) ── */
+.guide-table { font-size: 13px; }
+.guide-table td, .guide-table th { vertical-align: top; padding: 6px 8px; }
+table.table > thead > tr > th { border-bottom: 2px solid var(--grey-core); }
+.table-striped > tbody > tr:nth-of-type(odd) > td { background-color: var(--grey-alt); }
+
+/* ── Buttons ── */
+/* primary action (convert / download) */
+.btn-primary {
+  background-color: var(--purple-core) !important;
+  border-color: var(--purple-core) !important;
+  color: #fff !important;
+}
+.btn-primary:hover, .btn-primary:focus {
+  background-color: var(--purple-deep) !important;
+  border-color: var(--purple-deep) !important;
+  color: #fff !important;
+}
+/* secondary action (blank template downloads) */
+.btn-default {
+  background-color: var(--purple-lite) !important;
+  border: 1px solid var(--purple-border) !important;
+  color: var(--purple-core) !important;
+}
+.btn-default:hover, .btn-default:focus {
+  background-color: var(--purple-tint) !important;
+  color: var(--purple-deep) !important;
+}
+
+/* ── Hints & required flag ── */
+.hint { color: var(--font-muted); font-size: 13px; }
+.req-yes { color: var(--red-core); font-weight: bold; }
+
+/* ── Footer ── */
+.app-footer { margin-top: 26px; }
+.app-footer hr { border: 0; border-top: 1px solid var(--card-border); margin-bottom: 14px; }

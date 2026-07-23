@@ -1,0 +1,29 @@
+Package: TranslatoR
+Title: Bilingual Breeding Insight Import-Template Translator
+Version: 0.0.0.9000
+Authors@R:
+    person("Josue", "Chinchilla-Vargas",
+           role = c("aut", "cre"),
+           email = "josuechinchilla14@gmail.com")
+Description: A 'shiny' application built with 'golem' that switches Breeding
+    Insight / DeltaBreed import templates between Spanish and English. Each
+    import template is a module providing a bilingual field guide, blank
+    template downloads, and a converter that swaps the Data-sheet header row
+    between languages while leaving all data rows and other worksheets
+    untouched.
+License: Apache License (>= 2)
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+Depends:
+    R (>= 4.1.0)
+Imports:
+    config,
+    golem,
+    readxl,
+    shiny,
+    writexl
+Suggests:
+    pkgload,
+    spelling,
+    testthat (>= 3.0.0)
+Language: en-US
