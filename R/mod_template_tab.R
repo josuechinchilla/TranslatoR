@@ -44,56 +44,58 @@ template_tab_server <- function(id, template, lang) {
     # Absolute path to a bundled template file in inst/extdata/templates.
     tmpl_path <- function(fname) app_sys("extdata/templates", fname)
 
-    # -- Localized tab body -------------------------------------------------
+    # -- Localized tab body (bs4Dash panels, Familia mod_ped style) ---------
     output$body <- shiny::renderUI({
-      nm  <- if (lang() == "EN") template$name_en else template$name_es
       cur <- store()
       loaded_txt <- if (!is.null(cur) && !is.null(cur$fname)) {
         shiny::tags$p(class = "hint", shiny::tags$b(tr("loaded")), " ", cur$fname)
       } else {
         shiny::tags$p(class = "hint", tr("none"))
       }
-      shiny::tagList(
-        shiny::tags$h3(nm, style = "font-weight:normal; margin-top:12px;"),
-        # --- Blank template downloads ---
-        shiny::div(
-          class = "section-card",
-          shiny::tags$h4(tr("blank_hdr"), style = "margin-top:0;"),
-          shiny::tags$p(tr("blank_note"), class = "hint"),
-          shiny::div(
-            style = "display:flex; gap:10px; flex-wrap:wrap;",
-            shiny::downloadButton(ns("blank_en"), tr("blank_en")),
-            shiny::downloadButton(ns("blank_es"), tr("blank_es"))
+      shiny::fluidRow(
+        shiny::column(
+          width = 12,
+          # --- Blank template ---
+          bs4Dash::box(
+            title       = shiny::tagList(shiny::icon("download"), " ", tr("blank_hdr")),
+            status      = "info", solidHeader = FALSE, width = 12, collapsible = TRUE,
+            shiny::tags$p(tr("blank_note"), class = "hint"),
+            shiny::div(
+              style = "display:flex; gap:10px; flex-wrap:wrap;",
+              shiny::downloadButton(ns("blank_en"), tr("blank_en")),
+              shiny::downloadButton(ns("blank_es"), tr("blank_es"))
+            )
+          ),
+          # --- Field guide: info on the Data sheet (collapsible + maximizable) ---
+          bs4Dash::box(
+            title       = shiny::tagList(shiny::icon("table"), " ", tr("guide_hdr")),
+            status      = "info", solidHeader = FALSE, width = 12,
+            collapsible = TRUE, collapsed = TRUE, maximizable = TRUE,
+            shiny::tags$p(tr("guide_note"), class = "hint"),
+            shiny::tableOutput(ns("guide"))
+          ),
+          # --- Converter ---
+          bs4Dash::box(
+            title       = shiny::tagList(shiny::icon("right-left"), " ", tr("conv_hdr")),
+            status      = "info", solidHeader = FALSE, width = 12, collapsible = TRUE,
+            shiny::radioButtons(
+              ns("dir"), tr("dir_label"),
+              choices  = stats::setNames(c("es2en", "en2es"),
+                                         c(tr("dir_es2en"), tr("dir_en2es"))),
+              selected = "es2en"
+            ),
+            shiny::fileInput(
+              ns("file"), tr("upload_label"),
+              accept      = c(".xls", ".xlsx", ".csv"),
+              buttonLabel = tr("upload_btn"),
+              placeholder = tr("upload_ph")
+            ),
+            shiny::tags$p(tr("only_note"), class = "hint"),
+            loaded_txt,
+            shiny::tags$h4(tr("prev_hdr")),
+            shiny::tableOutput(ns("preview")),
+            shiny::downloadButton(ns("dl"), tr("download"), class = "btn btn-primary")
           )
-        ),
-        # --- Field guide (collapsible; collapsed by default) ---
-        shiny::tags$details(
-          class = "section-card",
-          shiny::tags$summary(tr("guide_hdr")),
-          shiny::tags$p(tr("guide_note"), class = "hint"),
-          shiny::tableOutput(ns("guide"))
-        ),
-        # --- Converter ---
-        shiny::div(
-          class = "section-card",
-          shiny::tags$h4(tr("conv_hdr"), style = "margin-top:0;"),
-          shiny::radioButtons(
-            ns("dir"), tr("dir_label"),
-            choices  = stats::setNames(c("es2en", "en2es"),
-                                       c(tr("dir_es2en"), tr("dir_en2es"))),
-            selected = "es2en"
-          ),
-          shiny::fileInput(
-            ns("file"), tr("upload_label"),
-            accept      = c(".xls", ".xlsx", ".csv"),
-            buttonLabel = tr("upload_btn"),
-            placeholder = tr("upload_ph")
-          ),
-          shiny::tags$p(tr("only_note"), class = "hint"),
-          loaded_txt,
-          shiny::tags$h4(tr("prev_hdr")),
-          shiny::tableOutput(ns("preview")),
-          shiny::downloadButton(ns("dl"), tr("download"), class = "btn btn-primary")
         )
       )
     })

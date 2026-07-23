@@ -3,33 +3,80 @@
 #' @param request Internal parameter for `{shiny}`.
 #'     DO NOT REMOVE.
 #' @import shiny
+#' @importFrom bs4Dash bs4DashPage bs4DashNavbar bs4DashSidebar sidebarMenu menuItem dashboardBody tabItems tabItem box dashboardFooter
+#'
 #' @noRd
 app_ui <- function(request) {
   tagList(
     golem_add_external_resources(),
-    fluidPage(
-      # Language toggle (top-right). Drives all localized content server-side.
-      div(
-        class = "topbar",
-        div(
-          class = "lang-toggle",
-          radioButtons(
-            "lang", label = NULL,
-            choices  = c("English" = "EN", "Español" = "ES"),
-            selected = "EN", inline = TRUE
+    tags$head(tags$style(HTML(sprintf(
+      ":root { --sidebar-core: var(--%s-core); --sidebar-lite: var(--%s-lite); --sidebar-deep: var(--%s-deep); }",
+      "purple", "purple", "purple"
+    )))),
+    bs4DashPage(
+      skin = "black",
+      bs4DashNavbar(
+        title = tagList(
+          tags$img(src = "www/logos2.png", height = "40")
+        ),
+        rightUi = tags$li(
+          class = "dropdown",
+          div(
+            class = "navbar-lang",
+            radioButtons(
+              "lang", label = NULL,
+              choices  = c("English" = "EN", "Español" = "ES"),
+              selected = "EN", inline = TRUE
+            )
           )
+        ),
+        help = NULL
+      ),
+      bs4DashSidebar(
+        skin          = "light",
+        status        = "primary",
+        fixed         = TRUE,
+        expandOnHover = TRUE,
+        sidebarMenu(
+          id   = "MainMenu",
+          flat = FALSE,
+          tags$li(class = "header", style = "color: grey; margin-top: 10px; margin-bottom: 10px; padding-left: 15px;", "Menu"),
+          menuItem("Home · Inicio", tabName = "home", icon = icon("house"), startExpanded = FALSE),
+          tags$li(class = "header", style = "color: grey; margin-top: 18px; margin-bottom: 10px; padding-left: 15px;", "Templates · Plantillas"),
+          menuItem("Samples · Muestras",       tabName = "sample",       icon = icon("vial")),
+          menuItem("Experiment · Experimento", tabName = "experimental", icon = icon("flask")),
+          menuItem("Ontology · Ontología",     tabName = "ontology",     icon = icon("sitemap")),
+          menuItem("Germplasm · Germoplasma",  tabName = "germplasm",    icon = icon("seedling")),
+          tags$li(class = "header", style = "color: grey; margin-top: 18px; margin-bottom: 10px; padding-left: 15px;", "Information"),
+          menuItem("Source Code", icon = icon("circle-info"), href = "https://github.com/josuechinchilla/TranslatoR")
         )
       ),
-      uiOutput("app_header"),
-      # One module per import template.
-      tabsetPanel(
-        id = "main_tabs", type = "tabs",
-        tabPanel(TEMPLATES$sample$tab,       value = "sample",       mod_sample_ui("sample")),
-        tabPanel(TEMPLATES$experimental$tab, value = "experimental", mod_experimental_ui("experimental")),
-        tabPanel(TEMPLATES$ontology$tab,     value = "ontology",     mod_ontology_ui("ontology")),
-        tabPanel(TEMPLATES$germplasm$tab,    value = "germplasm",    mod_germplasm_ui("germplasm"))
+      footer = dashboardFooter(
+        right = div(
+          style = "display: flex; align-items: center;",
+          div(
+            style = "display: flex; flex-direction: column; margin-right: 15px; text-align: right;",
+            div("2026 Breeding Insight"),
+            div("DeltaBreed import templates")
+          ),
+          div(
+            tags$img(src = "www/logos2.png", height = "40px")
+          )
+        ),
+        left = div(
+          style = "display: flex; align-items: center; height: 100%;",
+          sprintf("v%s", as.character(utils::packageVersion("TranslatoR")))
+        )
       ),
-      uiOutput("footer")
+      dashboardBody(
+        tabItems(
+          tabItem(tabName = "home",         mod_Home_ui("home")),
+          tabItem(tabName = "sample",       mod_sample_ui("sample")),
+          tabItem(tabName = "experimental", mod_experimental_ui("experimental")),
+          tabItem(tabName = "ontology",     mod_ontology_ui("ontology")),
+          tabItem(tabName = "germplasm",    mod_germplasm_ui("germplasm"))
+        )
+      )
     )
   )
 }
