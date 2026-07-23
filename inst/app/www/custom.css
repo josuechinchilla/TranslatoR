@@ -54,6 +54,11 @@ a, a:hover, a:focus { color: var(--blue-core); }
 .navbar-lang .radio-inline { color: var(--font-core); font-weight: normal; margin: 0; }
 .navbar-lang .radio-inline input { margin-right: 4px; }
 
+/* ── Bilingual labels: show only the active language (default English) ── */
+.l-es { display: none; }
+body.lang-es .l-en { display: none; }
+body.lang-es .l-es { display: inline; }
+
 /* ── Sidebar Active Menu Item ── */
 /* Colors are driven by --sidebar-* variables set in app_ui.R (default: purple) */
 :root {

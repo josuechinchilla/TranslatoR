@@ -1,5 +1,6 @@
 # ============================================================================
-# Translation helpers (pure functions, no Shiny reactivity).
+# Utility / helper functions (pure, no Shiny reactivity).
+# Header matching + workbook read/translate helpers used by the tab modules.
 # ============================================================================
 
 #' Normalize a header for matching

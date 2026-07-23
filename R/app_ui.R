@@ -7,6 +7,10 @@
 #'
 #' @noRd
 app_ui <- function(request) {
+  # Bilingual sidebar label: both languages are rendered; CSS shows the one that
+  # matches the active language (toggled by a body class - see custom.css / JS).
+  bil <- function(en, es) HTML(paste0(
+    "<span class='l-en'>", en, "</span><span class='l-es'>", es, "</span>"))
   tagList(
     golem_add_external_resources(),
     tags$head(tags$style(HTML(sprintf(
@@ -15,6 +19,8 @@ app_ui <- function(request) {
     )))),
     bs4DashPage(
       skin = "black",
+      dark = FALSE,   # keep the light/dark appearance switch (default light)
+      help = NULL,    # remove the unused help toggle switch
       bs4DashNavbar(
         title = tagList(
           tags$img(src = "www/logos2.png", height = "40")
@@ -40,15 +46,19 @@ app_ui <- function(request) {
         sidebarMenu(
           id   = "MainMenu",
           flat = FALSE,
-          tags$li(class = "header", style = "color: grey; margin-top: 10px; margin-bottom: 10px; padding-left: 15px;", "Menu"),
-          menuItem("Home · Inicio", tabName = "home", icon = icon("house"), startExpanded = FALSE),
-          tags$li(class = "header", style = "color: grey; margin-top: 18px; margin-bottom: 10px; padding-left: 15px;", "Templates · Plantillas"),
-          menuItem("Samples · Muestras",       tabName = "sample",       icon = icon("vial")),
-          menuItem("Experiment · Experimento", tabName = "experimental", icon = icon("flask")),
-          menuItem("Ontology · Ontología",     tabName = "ontology",     icon = icon("sitemap")),
-          menuItem("Germplasm · Germoplasma",  tabName = "germplasm",    icon = icon("seedling")),
-          tags$li(class = "header", style = "color: grey; margin-top: 18px; margin-bottom: 10px; padding-left: 15px;", "Information"),
-          menuItem("Source Code", icon = icon("circle-info"), href = "https://github.com/josuechinchilla/TranslatoR")
+          tags$li(class = "header", style = "color: grey; margin-top: 10px; margin-bottom: 10px; padding-left: 15px;", bil("Menu", "Menú")),
+          menuItem(bil("Home", "Inicio"), tabName = "home", icon = icon("house"), startExpanded = FALSE),
+          tags$li(class = "header", style = "color: grey; margin-top: 18px; margin-bottom: 10px; padding-left: 15px;", bil("Templates", "Plantillas")),
+          menuItem(bil("Samples", "Muestras"),       tabName = "sample",       icon = icon("vial")),
+          menuItem(bil("Experiment", "Experimento"), tabName = "experimental", icon = icon("flask")),
+          menuItem(bil("Ontology", "Ontología"),     tabName = "ontology",     icon = icon("sitemap")),
+          menuItem(bil("Germplasm", "Germoplasma"),  tabName = "germplasm",    icon = icon("seedling")),
+          tags$li(class = "header", style = "color: grey; margin-top: 18px; margin-bottom: 10px; padding-left: 15px;", "Delta Breed"),
+          menuItem(bil("Help Materials", "Materiales de Apoyo"), icon = icon("circle-info"), href = "https://breedinginsight.org/learning-hub/deltabreed/"),
+          menuItem(bil("Production Server", "Servidor de Producción"), icon = icon("circle-info"), href = "https://app.breedinginsight.net/"),
+          menuItem(bil("Sand Box Server", "Servidor de Entrenamiento"), icon = icon("circle-info"), href = "https://sandbox.breedinginsight.net/")
+          
+          
         )
       ),
       footer = dashboardFooter(
@@ -100,6 +110,10 @@ golem_add_external_resources <- function() {
     bundle_resources(
       path      = app_sys("app/www"),
       app_title = "TranslatoR"
-    )
+    ),
+    # Toggle a body class so bilingual labels switch with the language radio.
+    tags$script(HTML(
+      "$(document).on('shiny:inputchanged', function(e){ if (e.name === 'lang') { document.body.classList.toggle('lang-es', e.value === 'ES'); } });"
+    ))
   )
 }

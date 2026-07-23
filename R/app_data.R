@@ -1,10 +1,8 @@
-# ============================================================================
-# App data: per-template translation tables and UI strings (i18n).
-# Built once at package load. Only the Data-sheet column headers are used by
-# the converter; the descriptions feed the bilingual field guide.
-# ============================================================================
+# App data: per-template translation tables and UI strings for each template.
+# Only the Data-sheet column headers are used for translation of files
+# The descriptions feed the bilingual field guide.
+# One field per data-sheet column.
 
-# One field = one Data-sheet column.
 fld <- function(en, es, desc_en, desc_es, req_en, req_es) {
   data.frame(en = en, es = es, desc_en = desc_en, desc_es = desc_es,
              req_en = req_en, req_es = req_es, stringsAsFactors = FALSE)
@@ -295,9 +293,9 @@ L <- list(
     download = "Download converted file",
     err_type = "Unsupported file type. Please upload .xls, .xlsx or .csv.",
     blank_hdr = "Blank template",
-    blank_note = "Download an empty template to fill in. English is the upload-ready original; Spanish is the translated copy.",
+    blank_note = "Download an empty template to fill in. English is the upload-ready original; Spanish is a fully translated copy.",
     blank_en = "English (original)",
-    blank_es = "Spanish (translated headers)"
+    blank_es = "Spanish (fully translated)"
   ),
   ES = list(
     title = "Traductor de plantillas de Breeding Insight",
@@ -321,8 +319,8 @@ L <- list(
     download = "Descargar archivo convertido",
     err_type = "Tipo de archivo no admitido. Suba .xls, .xlsx o .csv.",
     blank_hdr = "Plantilla en blanco",
-    blank_note = "Descargue una plantilla vacía para completar. El inglés es el original listo para cargar; el español es la copia traducida.",
+    blank_note = "Descargue una plantilla vacía para completar. El inglés es el original listo para cargar; el español es una copia totalmente traducida.",
     blank_en = "Inglés (original)",
-    blank_es = "Español (encabezados traducidos)"
+    blank_es = "Español (traducción completa)"
   )
 )
