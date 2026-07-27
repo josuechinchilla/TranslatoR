@@ -139,14 +139,14 @@ mod_Home_server <- function(id, lang) {
             ),
             style = "text-decoration: none; color: inherit;"
           ),
-          shiny::tags$a(
-            href = "#", target = "_blank",
-            bs4Dash::valueBox(
-              value = NULL, subtitle = lbl_tutorial,
-              icon = shiny::icon("compass"), color = "info", gradient = TRUE, width = 11
-            ),
-            style = "text-decoration: none; color: inherit;"
-          ),
+          #shiny::tags$a(
+           # href = "#", target = "_blank",
+            #bs4Dash::valueBox(
+             # value = NULL, subtitle = lbl_tutorial,
+              #icon = shiny::icon("compass"), color = "info", gradient = TRUE, width = 11
+            #),
+            #style = "text-decoration: none; color: inherit;"
+          #),
           bs4Dash::box(
             title = bv_title, status = "warning", solidHeader = TRUE, width = 11, collapsible = FALSE,
             shiny::HTML(bv_body),
