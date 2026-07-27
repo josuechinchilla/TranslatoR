@@ -7,7 +7,6 @@
 #'
 #' @param id Module id.
 #' @param lang Reactive returning the active language ("EN"/"ES").
-#' @importFrom shiny NS uiOutput moduleServer renderUI fluidRow column tags HTML icon
 #' @noRd
 mod_Home_ui <- function(id) {
   ns <- shiny::NS(id)

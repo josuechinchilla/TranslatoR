@@ -45,7 +45,7 @@ build_dict <- function(fields, direction) {
 #' Map a vector of headers through a dictionary
 #'
 #' @param headers Character vector of header values.
-#' @param dict Dictionary from [build_dict()].
+#' @param dict Dictionary from build_dict.
 #' @return list(new = character, matched = logical).
 #' @noRd
 map_headers <- function(headers, dict) {
@@ -66,8 +66,6 @@ map_headers <- function(headers, dict) {
 #' @param path File path (with a proper .xls/.xlsx/.csv extension).
 #' @param fname Original file name (for labelling).
 #' @return list(type, sheets, sns, fname).
-#' @importFrom readxl excel_sheets read_excel
-#' @importFrom utils read.csv
 #' @noRd
 read_workbook <- function(path, fname) {
   ext <- tolower(tools::file_ext(path))
@@ -83,10 +81,10 @@ read_workbook <- function(path, fname) {
     list(type = "excel", sheets = sheets, sns = sns, fname = fname)
   } else if (ext == "csv") {
     m <- tryCatch(
-      read.csv(path, header = FALSE, colClasses = "character",
+      utils::read.csv(path, header = FALSE, colClasses = "character",
                check.names = FALSE, stringsAsFactors = FALSE,
                na.strings = character(0), fileEncoding = "UTF-8"),
-      error = function(e) read.csv(path, header = FALSE, colClasses = "character",
+      error = function(e) utils::read.csv(path, header = FALSE, colClasses = "character",
                                    check.names = FALSE, stringsAsFactors = FALSE, na.strings = character(0)))
     m[] <- lapply(m, as.character)
     list(type = "csv", sheets = list(Data = m), sns = "Data", fname = fname)
@@ -98,7 +96,7 @@ read_workbook <- function(path, fname) {
 #' Parse an uploaded file (fileInput value) into sheets
 #'
 #' @param f A fileInput value (list with `name` and `datapath`).
-#' @return See [read_workbook()].
+#' @return See read_workbook.
 #' @noRd
 parse_upload <- function(f) {
   ext <- tolower(tools::file_ext(f$name))
@@ -112,7 +110,7 @@ parse_upload <- function(f) {
 #' Prefer a sheet literally named "Data"; otherwise the sheet whose header row
 #' overlaps most with the template's known headers.
 #'
-#' @param parsed A parsed workbook from [read_workbook()].
+#' @param parsed A parsed workbook from read_workbook.
 #' @param fields A template's fields data.frame.
 #' @return Sheet name.
 #' @noRd
@@ -132,7 +130,7 @@ find_data_sheet <- function(parsed, fields) {
 
 #' Translate only the Data-sheet header row (row 1) in a given direction
 #'
-#' @param cur A parsed workbook from [read_workbook()].
+#' @param cur A parsed workbook from read_workbook.
 #' @param fields A template's fields data.frame.
 #' @param direction "es2en" or "en2es".
 #' @return The list of sheets with the Data header row translated.

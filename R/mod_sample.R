@@ -1,6 +1,6 @@
 #' Sample Submission tab module
 #'
-#' Thin wrapper around the shared [template_tab_ui()] / [template_tab_server()]
+#' Thin wrapper around the shared template_tab_ui/template_tab_server
 #' for the Sample Submission template.
 #'
 #' @param id Module id.

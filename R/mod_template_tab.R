@@ -10,9 +10,7 @@
 #' Template-tab UI
 #'
 #' @param id Module id.
-#' @return A `uiOutput` placeholder; the localized body is rendered server-side
-#'   so it reacts to the app-level language toggle.
-#' @importFrom shiny NS uiOutput
+#' @return A `uiOutput` placeholder; the localized body is rendered server-side so it reacts to the app-level language toggle.
 #' @noRd
 template_tab_ui <- function(id) {
   ns <- shiny::NS(id)
@@ -22,11 +20,8 @@ template_tab_ui <- function(id) {
 #' Template-tab server
 #'
 #' @param id Module id.
-#' @param template One element of [TEMPLATES] (id, name_en/es, file, fields...).
+#' @param template One element of TEMPLATES (id, name_en/es, file, fields...).
 #' @param lang A reactive returning the active language ("EN" or "ES").
-#' @importFrom shiny moduleServer reactiveVal observeEvent req renderUI tagList
-#'   tags div downloadButton fileInput radioButtons tableOutput renderTable
-#'   downloadHandler validate need setNames
 #' @noRd
 template_tab_server <- function(id, template, lang) {
   shiny::moduleServer(id, function(input, output, session) {

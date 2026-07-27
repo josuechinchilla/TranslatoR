@@ -1,6 +1,6 @@
 #' Experimental tab module
 #'
-#' Thin wrapper around the shared [template_tab_ui()] / [template_tab_server()]
+#' Thin wrapper around the shared template_tab_ui / template_tab_server
 #' for the Experimental template.
 #'
 #' @param id Module id.
