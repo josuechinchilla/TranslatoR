@@ -20,7 +20,7 @@ app_ui <- function(request) {
       help = NULL,    # remove the unused help toggle switch
       bs4Dash::bs4DashNavbar(
         title = shiny::tagList(
-          shiny::tags$img(src = "www/logos2.png", height = "40")
+          shiny::tags$img(src = "www/DeltaBreed_Logo_stacked.jpg", height = "55")
         ),
         rightUi = shiny::tags$li(
           class = "dropdown",
@@ -46,14 +46,14 @@ app_ui <- function(request) {
           shiny::tags$li(class = "header", style = "color: grey; margin-top: 10px; margin-bottom: 10px; padding-left: 15px;", bil("Menu", "Menú")),
           bs4Dash::menuItem(bil("Home", "Inicio"), tabName = "home", icon = shiny::icon("house"), startExpanded = FALSE),
           shiny::tags$li(class = "header", style = "color: grey; margin-top: 18px; margin-bottom: 10px; padding-left: 15px;", bil("Templates", "Plantillas")),
-          bs4Dash::menuItem(bil("Genotypes", "Genotipos"),       tabName = "sample",       icon = shiny::icon("dna")),
+          bs4Dash::menuItem(bil("Sample Submission", "Envío de Muestra"),       tabName = "sample",       icon = shiny::icon("dna")),
           bs4Dash::menuItem(bil("Experiments", "Experimentos"), tabName = "experimental", icon = shiny::icon("flask")),
           bs4Dash::menuItem(bil("Ontology", "Ontología"),     tabName = "ontology",     icon = shiny::icon("clipboard-list")),
           bs4Dash::menuItem(bil("Germplasm", "Germoplasma"),  tabName = "germplasm",    icon = shiny::icon("sitemap")),
-          shiny::tags$li(class = "header", style = "color: grey; margin-top: 18px; margin-bottom: 10px; padding-left: 15px;", "Delta Breed"),
+          shiny::tags$li(class = "header", style = "color: grey; margin-top: 18px; margin-bottom: 10px; padding-left: 15px;", "DeltaBreed"),
           bs4Dash::menuItem(bil("Help Materials", "Materiales de Apoyo"), icon = shiny::icon("circle-info"), href = "https://breedinginsight.org/learning-hub/deltabreed/"),
           bs4Dash::menuItem(bil("Production Server", "Servidor de Producción"), icon = shiny::icon("circle-info"), href = "https://app.breedinginsight.net/"),
-          bs4Dash::menuItem(bil("Sand Box Server", "Servidor de Entrenamiento"), icon = shiny::icon("circle-info"), href = "https://sandbox.breedinginsight.net/")
+          bs4Dash::menuItem(bil("Sandbox Server", "Servidor de Entrenamiento"), icon = shiny::icon("circle-info"), href = "https://sandbox.breedinginsight.net/")
         )
       ),
       footer = bs4Dash::dashboardFooter(

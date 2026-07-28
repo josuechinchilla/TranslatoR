@@ -33,7 +33,7 @@ mod_Home_server <- function(id, lang) {
          <p><b>What you can do</b></p>
          <ul>
            <li>Download a blank template (English original or Spanish)</li>
-           <li>Read a bilingual field guide for every column</li>
+           <li>Read a bilingual Translation Guide for every column</li>
            <li>Convert a filled-in template between Spanish and English</li>
          </ul>
          <p>Pick a template from the menu on the left, and use the <b>English / Español</b>
@@ -45,7 +45,7 @@ mod_Home_server <- function(id, lang) {
          <p><b>Qué puede hacer</b></p>
          <ul>
            <li>Descargar una plantilla en blanco (original en inglés o en español)</li>
-           <li>Consultar una guía de campos bilingüe para cada columna</li>
+           <li>Consultar una Guía de Traducciones bilingüe para cada columna</li>
            <li>Convertir una plantilla completada entre español e inglés</li>
          </ul>
          <p>Elija una plantilla en el menú de la izquierda y use el interruptor

@@ -7,7 +7,7 @@ Authors@R:
            email = "josuechinchilla14@gmail.com")
 Description: A 'shiny' application built with 'golem' that switches Breeding
     Insight / DeltaBreed import templates between Spanish and English. Each
-    import template is a module providing a bilingual field guide, blank
+    import template is a module providing a bilingual Translation Guide, blank
     template downloads, and a converter that swaps the Data-sheet header row
     between languages while leaving all data rows and other worksheets
     untouched.

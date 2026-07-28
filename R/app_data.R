@@ -1,6 +1,6 @@
 # App data: per-template translation tables and UI strings for each template.
 # Only the Data-sheet column headers are used for translation of files
-# The descriptions feed the bilingual field guide.
+# The descriptions feed the bilingual Translation Guide.
 # One field per data-sheet column.
 
 fld <- function(en, es, desc_en, desc_es, req_en, req_es) {
@@ -274,7 +274,7 @@ L <- list(
   EN = list(
     title = "Breeding Insight template translator",
     subtitle = "Switch a completed import template between Spanish and English. Only the Data-sheet column headers are translated — your data stays exactly as you entered it.",
-    guide_hdr = "Field guide",
+    guide_hdr = "Translation Guide",
     guide_note = "Reference for this template's Data-sheet columns. English is the version DeltaBreed expects on upload.",
     col_en = "English header", col_es = "Spanish header",
     col_desc = "Description", col_req = "Required",
@@ -300,7 +300,7 @@ L <- list(
   ES = list(
     title = "Traductor de plantillas de Breeding Insight",
     subtitle = "Cambie una plantilla de importación completada entre español e inglés. Solo se traducen los encabezados de columna de la hoja Data — sus datos permanecen tal como los ingresó.",
-    guide_hdr = "Guía de campos",
+    guide_hdr = "Guía de Traducciones",
     guide_note = "Referencia de las columnas de la hoja Data de esta plantilla. El inglés es la versión que DeltaBreed espera al cargar.",
     col_en = "Encabezado en inglés", col_es = "Encabezado en español",
     col_desc = "Descripción", col_req = "Obligatorio",

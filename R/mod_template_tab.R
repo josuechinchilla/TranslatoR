@@ -61,7 +61,7 @@ template_tab_server <- function(id, template, lang) {
               shiny::downloadButton(ns("blank_es"), tr("blank_es"))
             )
           ),
-          # --- Field guide: info on the Data sheet (collapsible + maximizable) ---
+          # --- Translation Guide: info on the Data sheet (collapsible + maximizable) ---
           bs4Dash::box(
             title       = shiny::tagList(shiny::icon("table"), " ", tr("guide_hdr")),
             status      = "info", solidHeader = FALSE, width = 12,
@@ -95,7 +95,7 @@ template_tab_server <- function(id, template, lang) {
       )
     })
 
-    # -- Field guide table (bilingual) --------------------------------------
+    # -- Translation Guide table (bilingual) --------------------------------------
     output$guide <- shiny::renderTable({
       d <- data.frame(
         a = fields$en, b = fields$es,

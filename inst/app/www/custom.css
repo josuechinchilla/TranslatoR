@@ -102,7 +102,7 @@ body.lang-es .l-es { display: inline; }
 .card.card-outline.card-info    { border-top: 3px solid var(--teal-core) !important; }
 .card.card-outline.card-success { border-top: 3px solid var(--green-core) !important; }
 
-/* ── Section cards (converter / field guide bodies) ── */
+/* ── Section cards (converter / Translation Guide bodies) ── */
 .section-card {
   background: var(--card-bg);
   border: 1px solid var(--card-border);
@@ -121,7 +121,7 @@ details.section-card > summary {
 details.section-card > summary:hover { color: var(--purple-core); }
 details.section-card[open] > summary { margin-bottom: 10px; }
 
-/* ── Tables (field guide & mapping preview) ── */
+/* ── Tables (Translation Guide & mapping preview) ── */
 .guide-table { font-size: 13px; }
 .guide-table td, .guide-table th { vertical-align: top; padding: 6px 8px; }
 table.table > thead > tr > th { border-bottom: 2px solid var(--grey-core); }
@@ -160,3 +160,21 @@ table.table > thead > tr > th { border-bottom: 2px solid var(--grey-core); }
 }
 .main-footer a { color: var(--font-muted); }
 .main-footer img { vertical-align: middle; }
+
+/* ── Dark mode: flip dark text to light so it stays readable ── */
+body.dark-mode { color: #E9ECEF; }
+body.dark-mode h2 { color: var(--purple-lite); }
+body.dark-mode h3,
+body.dark-mode h4 { color: #E9ECEF; }
+body.dark-mode .hint { color: #ADB5BD; }
+body.dark-mode a,
+body.dark-mode a:hover,
+body.dark-mode a:focus { color: #6EA8FE; }
+body.dark-mode .navbar-lang .radio-inline { color: #E9ECEF; }
+body.dark-mode details.section-card > summary { color: #E9ECEF; }
+body.dark-mode .card.card-outline > .card-header { color: #E9ECEF; }
+body.dark-mode table.table { color: #E9ECEF; }
+body.dark-mode table.table > thead > tr > th { border-bottom-color: #6c757d; }
+body.dark-mode .table-striped > tbody > tr:nth-of-type(odd) > td { background-color: rgba(255, 255, 255, 0.06); }
+body.dark-mode .main-footer { background-color: #343a40; color: #ADB5BD; border-top-color: #495057; }
+body.dark-mode .main-footer a { color: #ADB5BD; }

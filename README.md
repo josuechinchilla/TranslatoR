@@ -62,7 +62,7 @@ wrappers around a shared `template_tab_ui()` / `template_tab_server()` in
 **English / Español** toggle is a single `reactive` passed into every module server.
 
 Each template tab provides: a **Blank template** section (English original + Spanish
-`.xls`), a collapsible **Field guide**, and a **Converter** (upload a filled
+`.xls`), a collapsible **Translation Guide**, and a **Converter** (upload a filled
 template, pick a direction, download it with headers swapped).
 
 ### Styling (same mechanism as Familia)
