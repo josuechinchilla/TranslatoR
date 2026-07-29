@@ -1,4 +1,4 @@
-/* ── DeltaBreed Style Guide v1.2 palette ── */
+/* ── DeltaBreed Style Guide palette ── */
 /* Named in the same core / lite / deep manner as the Familia app's custom.css */
 
 :root {
@@ -18,7 +18,7 @@
   --grey-core:   #808080;    /* Header row underline */
   --grey-lite:   #DBDBDB;    /* Row divider, checkboxes, spinner */
   --grey-deep:   #494949;    /* Left Menu Background */
-  --grey-tab:    #EDEDED;    /* Inactive tab fill */
+  --grey-tab:    #EDEDED;    /* Inactive fill */
   --grey-border: #D2D2D2;    /* Close icon / hairline border */
   --grey-alt:    #F9F9F9;    /* Alt row highlight & footer background */
 
@@ -48,38 +48,61 @@ h2 { color: var(--purple-core); }
 h3, h4 { color: var(--font-core); }
 a, a:hover, a:focus { color: var(--blue-core); }
 
-/* ── Top bar & language toggle ── */
-.topbar { display: flex; justify-content: flex-end; align-items: center; margin-bottom: 6px; }
-.logo-header { text-align: left; }
-.lang-toggle { padding-top: 8px; }
-.lang-toggle .shiny-options-group { display: inline-block; }
-.lang-toggle label { font-weight: normal; }
+/* ── Navbar language toggle ── */
+.navbar-lang { padding: 8px 14px 0 14px; }
+.navbar-lang .shiny-options-group { display: inline-flex; gap: 14px; margin: 0; }
+.navbar-lang .radio-inline { color: var(--font-core); font-weight: normal; margin: 0; }
+.navbar-lang .radio-inline input { margin-right: 4px; }
 
-/* ── Tabs ── */
-/* inactive tab - grey background */
-.nav-tabs > li:not(.active) > a {
-  background-color: var(--grey-tab) !important;
-  color: var(--font-muted) !important;
-  border: 1px solid var(--grey-border) !important;
-  font-size: 15px !important;
+/* ── Bilingual labels: show only the active language (default English) ── */
+.l-es { display: none; }
+body.lang-es .l-en { display: none; }
+body.lang-es .l-es { display: inline; }
+
+/* ── Sidebar Active Menu Item ── */
+/* Colors are driven by --sidebar-* variables set in app_ui.R (default: purple) */
+:root {
+  --sidebar-core: var(--purple-core);
+  --sidebar-lite: var(--purple-lite);
+  --sidebar-deep: var(--purple-deep);
 }
-/* hover on inactive tab */
-.nav-tabs > li:not(.active) > a:hover {
-  background-color: var(--purple-tint) !important;
-  color: var(--purple-core) !important;
+.main-sidebar .nav-sidebar .nav-item.active .nav-link,
+.main-sidebar .nav-sidebar .nav-item .nav-link.active {
+  background-color: var(--sidebar-core) !important;
+  color: white !important;
 }
-/* active tab - DeltaBreed purple */
-.nav-tabs > li.active > a,
-.nav-tabs > li.active > a:hover,
-.nav-tabs > li.active > a:focus {
-  background-color: var(--purple-core) !important;
-  color: #fff !important;
-  border: 1px solid var(--purple-core) !important;
-  border-bottom-color: var(--purple-core) !important;
-  font-size: 15px !important;
+.main-sidebar .nav-sidebar .nav-item .nav-link:hover {
+  background-color: var(--sidebar-lite) !important;
+  color: #333 !important;
+}
+.main-sidebar .nav-sidebar .nav-item.active .nav-link .nav-icon,
+.main-sidebar .nav-sidebar .nav-item .nav-link.active .nav-icon {
+  color: white !important;
+}
+.main-sidebar .nav-sidebar .nav-treeview .nav-item .nav-link.active {
+  background-color: var(--sidebar-deep) !important;
+  color: white !important;
 }
 
-/* ── Section cards ── */
+/* ── bs4Dash boxes (Home page) ── */
+.card-primary:not(.card-outline) .card-header {
+  background-color: var(--purple-core) !important; color: #fff !important; border: none !important;
+}
+.card-primary:not(.card-outline) { border-top: 3px solid var(--purple-core) !important; }
+.card-info:not(.card-outline) .card-header {
+  background-color: var(--teal-core) !important; color: #fff !important; border: none !important;
+}
+.card-info:not(.card-outline) { border-top: 3px solid var(--teal-core) !important; }
+.card-success:not(.card-outline) .card-header {
+  background-color: var(--green-core) !important; color: #fff !important; border: none !important;
+}
+.card-success:not(.card-outline) { border-top: 3px solid var(--green-core) !important; }
+/* Outline boxes (solidHeader = FALSE): DeltaBreed colored top border */
+.card.card-outline.card-primary { border-top: 3px solid var(--purple-core) !important; }
+.card.card-outline.card-info    { border-top: 3px solid var(--teal-core) !important; }
+.card.card-outline.card-success { border-top: 3px solid var(--green-core) !important; }
+
+/* ── Section cards (converter / Translation Guide bodies) ── */
 .section-card {
   background: var(--card-bg);
   border: 1px solid var(--card-border);
@@ -87,7 +110,6 @@ a, a:hover, a:focus { color: var(--blue-core); }
   padding: 14px 18px;
   margin-top: 14px;
 }
-/* collapsible section header */
 details.section-card > summary {
   font-size: 18px;
   font-weight: 600;
@@ -99,14 +121,13 @@ details.section-card > summary {
 details.section-card > summary:hover { color: var(--purple-core); }
 details.section-card[open] > summary { margin-bottom: 10px; }
 
-/* ── Tables (field guide & mapping preview) ── */
+/* ── Tables (Translation Guide & mapping preview) ── */
 .guide-table { font-size: 13px; }
 .guide-table td, .guide-table th { vertical-align: top; padding: 6px 8px; }
 table.table > thead > tr > th { border-bottom: 2px solid var(--grey-core); }
 .table-striped > tbody > tr:nth-of-type(odd) > td { background-color: var(--grey-alt); }
 
 /* ── Buttons ── */
-/* primary action (convert / download) */
 .btn-primary {
   background-color: var(--purple-core) !important;
   border-color: var(--purple-core) !important;
@@ -117,7 +138,6 @@ table.table > thead > tr > th { border-bottom: 2px solid var(--grey-core); }
   border-color: var(--purple-deep) !important;
   color: #fff !important;
 }
-/* secondary action (blank template downloads) */
 .btn-default {
   background-color: var(--purple-lite) !important;
   border: 1px solid var(--purple-border) !important;
@@ -133,5 +153,28 @@ table.table > thead > tr > th { border-bottom: 2px solid var(--grey-core); }
 .req-yes { color: var(--red-core); font-weight: bold; }
 
 /* ── Footer ── */
-.app-footer { margin-top: 26px; }
-.app-footer hr { border: 0; border-top: 1px solid var(--card-border); margin-bottom: 14px; }
+.main-footer {
+  background-color: #fff;
+  color: var(--font-muted);
+  border-top: 1px solid var(--card-border);
+}
+.main-footer a { color: var(--font-muted); }
+.main-footer img { vertical-align: middle; }
+
+/* ── Dark mode: flip dark text to light so it stays readable ── */
+body.dark-mode { color: #E9ECEF; }
+body.dark-mode h2 { color: var(--purple-lite); }
+body.dark-mode h3,
+body.dark-mode h4 { color: #E9ECEF; }
+body.dark-mode .hint { color: #ADB5BD; }
+body.dark-mode a,
+body.dark-mode a:hover,
+body.dark-mode a:focus { color: #6EA8FE; }
+body.dark-mode .navbar-lang .radio-inline { color: #E9ECEF; }
+body.dark-mode details.section-card > summary { color: #E9ECEF; }
+body.dark-mode .card.card-outline > .card-header { color: #E9ECEF; }
+body.dark-mode table.table { color: #E9ECEF; }
+body.dark-mode table.table > thead > tr > th { border-bottom-color: #6c757d; }
+body.dark-mode .table-striped > tbody > tr:nth-of-type(odd) > td { background-color: rgba(255, 255, 255, 0.06); }
+body.dark-mode .main-footer { background-color: #343a40; color: #ADB5BD; border-top-color: #495057; }
+body.dark-mode .main-footer a { color: #ADB5BD; }
