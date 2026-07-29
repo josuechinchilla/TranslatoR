@@ -1,88 +1,108 @@
-# TranslatoR
+[![R](https://img.shields.io/badge/R-%3E%3D%204.1-blue)](https://www.r-project.org/)
+[![Shiny](https://img.shields.io/badge/Shiny-Web%20Application-blueviolet)](https://shiny.posit.co/)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://www.apache.org/licenses/LICENSE-2.0)
+[![GitHub issues](https://img.shields.io/github/issues/josuechinchilla/TranslatoR)](https://github.com/josuechinchilla/TranslatoR/issues)
+[![GitHub pull requests](https://img.shields.io/github/issues-pr/josuechinchilla/TranslatoR)](https://github.com/josuechinchilla/TranslatoR/pulls)
+[![GitHub Release](https://img.shields.io/github/v/release/josuechinchilla/TranslatoR?include_prereleases)](https://github.com/josuechinchilla/TranslatoR/releases/latest)
 
-A `{golem}` + `{bs4Dash}` Shiny application, laid out like the Familia app, that
-switches Breeding Insight / DeltaBreed import templates between **Spanish and
-English**. A left sidebar navigates a Home page plus one module per import template.
-Only the **Data-sheet column headers** are translated — every data value and every
-other worksheet is copied through untouched.
+<div align="center">
+<img width="250" alt="TranslatoR logo" src="inst/app/www/DeltaBreed_Logo_stacked.jpg"/>
+</div>
 
-## Run it
+### Bilingual DeltaBreed Import-Template Translator
+
+TranslatoR is a Shiny web application developed by [Breeding Insight](https://breedinginsight.org/)
+to switch [DeltaBreed](https://breedinginsight.org/learning-hub/deltabreed/) import
+templates between Spanish and English. It lets breeding programs download bilingual
+blank templates, read a bilingual field guide for every column, and convert a
+completed template's Data-sheet headers between languages — so Spanish-speaking
+users can prepare files that upload cleanly to DeltaBreed.
+
+**Live app:** https://bi-science.shinyapps.io/TranslatoR/
+
+## Overview
+
+Clear, correctly formatted import templates are foundational to getting data into
+DeltaBreed. TranslatoR provides an accessible and reproducible interface for:
+
+- Downloading blank import templates in English or fully translated Spanish
+- Understanding each Data-sheet column through a bilingual field guide
+- Converting a completed template's headers between Spanish and English
+- Working entirely in English or Spanish through a single language toggle
+
+The application covers the four DeltaBreed import templates — Sample Submission,
+Experiments, Ontology, and Germplasm — and is designed to be adaptable to new
+templates.
+
+---
+
+## Key Features
+
+### Bilingual Blank Templates
+- Download the upload-ready English original or a fully translated Spanish copy of any template
+- Every worksheet is preserved (README, controlled-vocabulary lists, and Data)
+- Spanish copies live in `inst/extdata/templates` and are served automatically — no code change to update them
+
+### Bilingual Field Guide
+- Collapsible, maximizable per-column reference for the Data sheet
+- Shows the English header, the Spanish header, a description, and whether the column is required
+- Switches language with the app-level toggle
+
+### Header Converter
+- Upload a completed `.xls`, `.xlsx`, or `.csv` and choose a direction (Spanish → English or English → Spanish)
+- Only the Data-sheet header row is rewritten; all data rows and every other worksheet pass through untouched
+- Accent- and case-insensitive matching, with unrecognized columns flagged and left as-is
+- Excel in produces Excel out; CSV in produces CSV out
+- Live mapping preview before download
+
+### Bilingual Interface
+- A single **English / Español** toggle localizes the whole interface: sidebar menu, field guides, notes, and buttons
+- Built on a `bs4Dash` dashboard shell with a light sidebar and DeltaBreed-branded styling
+
+---
+
+## Installation and Running the App
+
+TranslatoR uses a golem application structure, allowing it to be installed like a
+standard R package.
+
+### Install from GitHub
 
 ```r
-# install once
-install.packages(c("shiny", "bs4Dash", "golem", "config", "readxl", "writexl", "pkgload"))
-
-# from the package root:
-pkgload::load_all()
-run_app()
-# or open app.R in RStudio and click "Run App"
+if (!requireNamespace("remotes", quietly = TRUE)) {
+  install.packages("remotes")
+}
+remotes::install_github("josuechinchilla/TranslatoR")
 ```
 
-Deploy the same way as Familia (e.g. `rsconnect::deployApp()`).
-
-## Package structure (golem)
-
-```
-TranslatoR/
-├── app.R                       # launcher: pkgload::load_all(); run_app()
-├── DESCRIPTION / NAMESPACE
-├── R/
-│   ├── app_config.R            # app_sys(), get_golem_config()
-│   ├── run_app.R               # run_app() -> shinyApp(app_ui, app_server)
-│   ├── app_ui.R                # bs4Dash shell (navbar + sidebar + tabItems + footer)
-│   ├── app_server.R            # language state + module servers
-│   ├── app_data.R             # TEMPLATES (fields tables) + i18n strings (L)
-│   ├── fct_translate.R         # header-matching + workbook read/translate helpers
-│   ├── mod_home.R              # Home tab (bs4Dash boxes + links to edit)
-│   ├── mod_template_tab.R      # shared tab module (UI + server)
-│   ├── mod_sample.R            # one module per template tab (thin wrappers)
-│   ├── mod_experimental.R
-│   ├── mod_ontology.R
-│   └── mod_germplasm.R
-└── inst/
-    ├── golem-config.yml
-    ├── app/www/
-    │   ├── custom.css          # DeltaBreed palette (Familia-style :root naming)
-    │   └── logos2.png
-    └── extdata/templates/      # blank English + *_ES.xls templates served for download
+### Run TranslatoR
+```r
+TranslatoR::run_app()
 ```
 
-### Layout & modules
+### Dependencies
+Key R packages used by TranslatoR include:
 
-The shell is a `bs4Dash::bs4DashPage` (navbar with the logo + language toggle, a
-light sidebar menu, `tabItems` body, and a footer) — the same layout style as
-Familia. The sidebar has **Home** plus one entry per template.
+* shiny
+* bs4Dash
+* golem
+* config
+* readxl
+* writexl
+* pkgload
 
-Every tab is a module. `mod_home` is the welcome page (bs4Dash boxes with a
-localized intro and a **Links** box whose `href`s are placeholders to edit). The
-four template tabs share the same structure and differ only by configuration, so
-`mod_sample`, `mod_experimental`, `mod_ontology` and `mod_germplasm` are thin
-wrappers around a shared `template_tab_ui()` / `template_tab_server()` in
-`mod_template_tab.R`, each passed its entry from `TEMPLATES`. The app-level
-**English / Español** toggle is a single `reactive` passed into every module server.
+---
 
-Each template tab provides: a **Blank template** section (English original + Spanish
-`.xls`), a collapsible **Translation Guide**, and a **Converter** (upload a filled
-template, pick a direction, download it with headers swapped).
+## Citation
 
-### Styling (same mechanism as Familia)
+If you use TranslatoR in your work, please cite it as:
+Chinchilla-Vargas, J., & Breeding Insight Team (2026). TranslatoR: Bilingual DeltaBreed Import-Template Translator. R package version 0.0.0.9000. https://github.com/josuechinchilla/TranslatoR/
 
-`golem_add_external_resources()` registers the `www/` path with
-`add_resource_path("www", app_sys("app/www"))` and pulls everything in
-`inst/app/www` — including `custom.css` — via `golem::bundle_resources()`. The logo
-is referenced as `www/logos2.png`. `custom.css` styles the bs4Dash sidebar (active
-item purple), navbar toggle, Home boxes (`.card-*` status colors) and the converter
-components.
+## License
+TranslatoR is released under the Apache License, Version 2.0.
+See the LICENSE file or https://www.apache.org/licenses/LICENSE-2.0 for details.
 
-`custom.css` follows the **DeltaBreed Style Guide v1.2** and defines colors in the
-same `--<hue>-core / -lite / -deep` `:root` convention as Familia's `custom.css`
-(`--purple-core: #753FCD`, `--purple-deep: #602DAE`, `--teal-core: #3FB3B6`,
-`--red-core: #DF1659`, `--green-core: #1C7B36`, `--grey-core: #808080`,
-`--font-core: #363636`). Change a value there and it updates everywhere.
-
-## Blank Spanish templates
-
-`inst/extdata/templates/*_ES.xls` are currently interim (only the Data-sheet
-headers are translated). To ship a fully translated template, drop a `.xls` with the
-same `<base>_ES.xls` filename into that folder — it is served automatically, no code
-change needed.
+# Acknowledgments
+TranslatoR is developed as part of the Breeding Insight initiative
+(https://www.breedinginsight.org) to provide open-source, data-driven tools
+for modern breeding programs.
