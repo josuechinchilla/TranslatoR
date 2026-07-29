@@ -22,17 +22,15 @@ users can prepare files that upload cleanly to DeltaBreed.
 
 ## Overview
 
-Clear, correctly formatted import templates are foundational to getting data into
-DeltaBreed. TranslatoR provides an accessible and reproducible interface for:
+ TranslatoR provides an accessible and reproducible interface for:
 
 - Downloading blank import templates in English or fully translated Spanish
 - Understanding each Data-sheet column through a bilingual field guide
 - Converting a completed template's headers between Spanish and English
 - Working entirely in English or Spanish through a single language toggle
 
-The application covers the four DeltaBreed import templates — Sample Submission,
-Experiments, Ontology, and Germplasm — and is designed to be adaptable to new
-templates.
+The application covers the four DeltaBreed import templates (Sample Submission,
+Experiments, Ontology, and Germplasm). 
 
 ---
 
@@ -41,7 +39,7 @@ templates.
 ### Bilingual Blank Templates
 - Download the upload-ready English original or a fully translated Spanish copy of any template
 - Every worksheet is preserved (README, controlled-vocabulary lists, and Data)
-- Spanish copies live in `inst/extdata/templates` and are served automatically — no code change to update them
+- Spanish copies live in `inst/extdata/templates` and are served automatically.
 
 ### Bilingual Field Guide
 - Collapsible, maximizable per-column reference for the Data sheet
