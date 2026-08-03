@@ -27,29 +27,29 @@ mod_Home_server <- function(id, lang) {
         "TranslatoR: Traductor de plantillas de Breeding Insight"
       }
       app_desc <- if (en) {
-        "<p>TranslatoR switches Breeding Insight / DeltaBreed import templates between
-          Spanish and English. Only the <b>Data-sheet column headers</b> are translated —
-          your data stays exactly as you entered it.</p>
-         <p><b>What you can do</b></p>
+        "<p>TranslatoR converts DeltaBreed import templates from English to Spanish and vice-versa. 
+        Only the <b>Data-sheet headers</b> are translated — your data stays exactly as you entered them..</p>
+         <p><b>With TranslatoR you can:</b></p>
          <ul>
-           <li>Download a blank template (English original or Spanish)</li>
+           <li>Download DeltaBreed import templates in English or Spanish</li>
            <li>Read a bilingual Translation Guide for every column</li>
            <li>Convert a filled-in template between Spanish and English</li>
          </ul>
-         <p>Pick a template from the menu on the left, and use the <b>English / Español</b>
-          switch at the top right to change languages.</p>"
+         <p>PChoose the template you need from the menu on the left. <p>
+        <p>To change the language for the app, toggle English / Español at the top right.</p>"
+        
       } else {
-        "<p>TranslatoR cambia las plantillas de importación de Breeding Insight / DeltaBreed
+        "<p>TranslatoR traduce las plantillas de importación de Breeding Insight / DeltaBreed
           entre español e inglés. Solo se traducen los <b>encabezados de columna de la hoja
           Data</b>; sus datos permanecen tal como los ingresó.</p>
-         <p><b>Qué puede hacer</b></p>
+         <p><b>Con TranslatoR puede:</b></p>
          <ul>
            <li>Descargar una plantilla en blanco (original en inglés o en español)</li>
-           <li>Consultar una Guía de Traducciones bilingüe para cada columna</li>
+           <li>Consultar una Guía de Traducciones para cada columna</li>
            <li>Convertir una plantilla completada entre español e inglés</li>
          </ul>
-         <p>Elija una plantilla en el menú de la izquierda y use el interruptor
-          <b>English / Español</b> en la parte superior derecha para cambiar el idioma.</p>"
+         <p>Elija una plantilla en el menú de la izquierda. <p>
+         <p>Use el interruptor <b>English / Español</b> en la parte superior derecha para cambiar el idioma.</p>"
       }
 
       # ---- Column 2: About Breeding Insight ----
