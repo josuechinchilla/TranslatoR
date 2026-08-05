@@ -115,6 +115,9 @@ mod_sample_server <- function(id, lang) {
         shiny::validate(shiny::need(!is.null(cur) && cur$type != "error", tr("err_type")))
         direction <- if (is.null(input$dir)) "es2en" else input$dir
         sheets <- translate_sheets(cur, fields, direction)
+        # Also translate the controlled-vocabulary Tissue column VALUES so the
+        # file uploads cleanly - free-text columns are untouched.
+        sheets <- translate_vocab_cols(sheets, find_data_sheet(cur, fields), fields, sample_vocab, direction)
         if (cur$type == "csv") {
           utils::write.table(sheets[["Data"]], file, sep = ",", row.names = FALSE,
                              col.names = FALSE, na = "", qmethod = "double",

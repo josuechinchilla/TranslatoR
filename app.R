@@ -4,4 +4,4 @@
 
 pkgload::load_all(export_all = FALSE, helpers = FALSE, attach_testthat = FALSE)
 options("golem.app.prod" = TRUE, shiny.autoload.r = FALSE)
-TranslatoR::run_app() # add parameters here (if any)
+run_app() # add parameters here (if any)  -- unqualified so rsconnect doesn't try to snapshot TranslatoR itself

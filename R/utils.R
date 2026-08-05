@@ -145,3 +145,46 @@ translate_sheets <- function(cur, fields, direction) {
   }
   sheets
 }
+
+#' Translate controlled-vocabulary VALUES for named Data-sheet columns
+#'
+#' Rewrites the data values (rows 2..n) of columns whose header matches one of
+#' the vocabulary entries, mapping between languages by an exact accent- and
+#' case-insensitive match. Values that are not recognized controlled terms, and
+#' all other (free-text) columns, are left exactly as entered. Used for the
+#' Ontology template, where DeltaBreed requires English controlled keywords.
+#'
+#' @param sheets List of sheets (the Data header row may already be translated).
+#' @param dsheet Name of the Data sheet.
+#' @param fields Template fields data.frame (used to locate columns by header).
+#' @param vocab List of `list(field, en, es)` value maps; `en`/`es` are aligned.
+#' @param direction "es2en" or "en2es".
+#' @return `sheets` with the vocabulary column values translated.
+#' @noRd
+translate_vocab_cols <- function(sheets, dsheet, fields, vocab, direction) {
+  df <- sheets[[dsheet]]
+  if (is.null(df) || nrow(df) < 2) return(sheets)
+  hdr <- normalize_hdr(as.character(unlist(df[1, ])))
+  for (v in vocab) {
+    fi <- which(fields$en == v$field)
+    if (length(fi) == 0) next
+    spellings <- c(normalize_hdr(fields$en[fi[1]]), normalize_hdr(fields$es[fi[1]]))
+    cols <- which(hdr %in% spellings)
+    if (length(cols) == 0) next
+    if (direction == "es2en") { from <- normalize_hdr(v$es); to <- v$en }
+    else                      { from <- normalize_hdr(v$en); to <- v$es }
+    for (ci in cols) {
+      col <- as.character(df[[ci]])
+      for (r in 2:length(col)) {
+        k <- normalize_hdr(col[r])
+        if (nzchar(k)) {
+          m <- which(from == k)
+          if (length(m) >= 1) col[r] <- to[m[1]]
+        }
+      }
+      df[[ci]] <- col
+    }
+  }
+  sheets[[dsheet]] <- df
+  sheets
+}

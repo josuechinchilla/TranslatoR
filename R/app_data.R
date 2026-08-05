@@ -42,13 +42,28 @@ sample_fields <- rbind(
       "La especie del organismo.",
       "Yes", "Sí"),
   fld("Tissue", "Tejido",
-      "The tissue/sample type. See the Tissue Types worksheet for more details.",
-      "El tipo de tejido/muestra. Consulte la hoja 'Tissue Types' para más detalles.",
+      "The tissue/sample type. See the DArT Tissue Types worksheet for more details.",
+      "El tipo de tejido/muestra. Consulte la hoja 'DArT Tissue Types' para más detalles.",
       "Yes", "Sí"),
   fld("Comments", "Comentarios",
       "Sample specific comments.",
       "Comentarios específicos de la muestra.",
       "No", "No")
+)
+
+# --------------------------------------------------------------------------
+# Sample Submission controlled-vocabulary VALUE map.
+# The Data-sheet "Tissue" column must hold an English tissue type on upload, so
+# the converter rewrites the VALUE (see the DArT Tissue Types worksheet). Same
+# mechanism as ont_vocab; free-text columns are left untouched.
+sample_vocab <- list(
+  list(field = "Tissue",
+       en = c("leaf", "meristem", "root", "seed", "seedling", "bud", "sporophyte",
+              "blood", "ear", "feather", "hair", "leg", "liver", "scat", "swab",
+              "skin", "tail", "toe", "whole insect", "fin clips", "insect head", "insect leg"),
+       es = c("hoja", "meristemo", "raíz", "semilla", "plántula", "yema", "esporófito",
+              "sangre", "oreja", "pluma", "pelo", "pata", "hígado", "excremento", "hisopo",
+              "piel", "cola", "dedo", "insecto entero", "recortes de aleta", "cabeza de insecto", "pata de insecto"))
 )
 
 experimental_fields <- rbind(
@@ -145,7 +160,7 @@ ontology_fields <- rbind(
       "No", "No"),
   fld("Term Type", "Tipo de Término",
       "Choose the ontology variable as: phenotype, germplasm attribute, or germplasm passport. Defaults to phenotype if unspecified. Optional.",
-      "Elija la variable de ontología como: fenotipo, atributo de germoplasma o pasaporte de germoplasma. Por defecto es fenotipo si no se especifica. Opcional.",
+      "Elija la variable de ontología como: phenotype, germplasm attribute o germplasm passport. Por defecto es phenotype si no se especifica. Opcional.",
       "No", "No"),
   fld("Description", "Descripción",
       "Human readable description of the ontology term. Required.",
@@ -209,6 +224,27 @@ ontology_fields <- rbind(
       "Yes, if...", "Sí, si...")
 )
 
+# --------------------------------------------------------------------------
+# Ontology controlled-vocabulary VALUE maps.
+# DeltaBreed expects these column values in English on upload, so the converter
+# rewrites the VALUES (not just the header). Free-text columns stay untouched.
+# `field` locates a Data-sheet column by its English/Spanish header; `en`/`es`
+# are aligned value vectors (extra rows allow alternate accepted Spanish spellings).
+ont_vocab <- list(
+  list(field = "Term Type",
+       en = c("phenotype", "germplasm attribute", "germplasm passport"),
+       es = c("fenotipo",  "atributo de germoplasma", "pasaporte de germoplasma")),
+  list(field = "Status",
+       en = c("active", "archived"),
+       es = c("activo", "archivado")),
+  list(field = "Method Class",
+       en = c("observation", "measurement", "counting", "estimation", "computation", "computation"),
+       es = c("observación", "medición",    "conteo",   "estimación", "cómputo",     "cálculo")),
+  list(field = "Scale Class",
+       en = c("date",  "nominal", "numerical", "numerical", "ordinal", "text"),
+       es = c("fecha", "nominal", "numérica",  "numérico",  "ordinal", "texto"))
+)
+
 germplasm_fields <- rbind(
   fld("GID", "GID",
       "Germplasm IDs are auto-incrementing numbers assigned by the system. Optional, except when appending existing germplasm.",
@@ -259,7 +295,7 @@ germplasm_fields <- rbind(
 # Master list of templates. tab = short bilingual tab title.
 TEMPLATES <- list(
   list(id = "sample",       name_en = "Sample Submission",  name_es = "Envío de Muestras",
-       file = "bi_sample_submission_template_v01.xls",  tab = "Tissue/DNA samples · Muestras de tejido/adn", fields = sample_fields),
+       file = "bi_sample_submission_template_v02.xls",  tab = "Tissue/DNA samples · Muestras de tejido/adn", fields = sample_fields),
   list(id = "experimental", name_en = "Experimental",       name_es = "Experimental",
        file = "Experimental_Template_V08.xls",          tab = "Experiment · Experimento", fields = experimental_fields),
   list(id = "ontology",     name_en = "Ontology",           name_es = "Ontología",

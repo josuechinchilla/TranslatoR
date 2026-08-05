@@ -1,7 +1,7 @@
 #' Home tab module
 #'
 #' Welcome page laid out like the Familia Home page: an app-description box, an
-#' "About Breeding Insight" box, and a column of link cards plus the Breedverse
+#' "About Breeding Insight" box, and a column of link cards plus a disclaimer
 #' box. All text is localized (EN/ES) via the app-level language toggle.
 #' Replace the placeholder link `href`s.
 #'
@@ -35,7 +35,7 @@ mod_Home_server <- function(id, lang) {
            <li>Read a bilingual Translation Guide for every column</li>
            <li>Convert a filled-in template between Spanish and English</li>
          </ul>
-         <p>PChoose the template you need from the menu on the left. <p>
+         <p>Choose the template you need from the menu on the left. <p>
         <p>To change the language for the app, toggle English / Español at the top right.</p>"
         
       } else {
@@ -82,24 +82,30 @@ mod_Home_server <- function(id, lang) {
         </div>"
       }
 
-      # ---- Column 3: link cards + Breedverse ----
+      # ---- Column 3: link cards + Disclaimer ----
       lbl_learn    <- if (en) "Learn More About Breeding Insight" else "Conozca más sobre Breeding Insight"
       lbl_contact  <- if (en) "Contact Us" else "Contáctenos"
       lbl_tutorial <- if (en) "TranslatoR Tutorial" else "Tutorial de TranslatoR"
-      bv_title     <- if (en) "Try the Breedverse!" else "¡Pruebe el Breedverse!"
-      bv_body <- if (en) {
-        "We developed an R shiny interface where you can use ALL of our Breeding Insight applications in a single location. This
-         includes applications like BIGapp, Qploidy, and GenoBrew, PLUS all of our newly released applications.
-         Learn more and see install instructions here
-          <div style='text-align: center; margin-top: 20px;'>
-            <img src='www/breedverse_logo.png' alt='Breedverse' style='width: 120px; height: 140px;'>
+      disc_title <- if (en) "Disclaimer" else "Descargo de responsabilidad"
+      disc_body <- if (en) {
+        "<p>TranslatoR is a companion helper tool for preparing <b>DeltaBreed</b>
+         import templates. It is <b>not part of the DeltaBreed software</b> itself.</p>
+         <p>TranslatoR does not connect to, upload to, or modify any DeltaBreed
+         database. Always review your converted file before importing it into
+         DeltaBreed.</p>
+         
+          <div style='text-align: center; margin-top: 15px;'>
+            <img src='www/deltabreed_logo.svg' alt='DeltaBreed' style='width: 100px; height: auto;'>
           </div>"
       } else {
-        "Desarrollamos una interfaz de R Shiny donde puede usar TODAS nuestras aplicaciones de Breeding Insight en un solo lugar. Esto
-         incluye aplicaciones como BIGapp, Qploidy y GenoBrew, ADEMÁS de todas nuestras aplicaciones recién lanzadas.
-         Conozca más y vea las instrucciones de instalación aquí
-          <div style='text-align: center; margin-top: 20px;'>
-            <img src='www/breedverse_logo.png' alt='Breedverse' style='width: 120px; height: 140px;'>
+        "<p>TranslatoR es una herramienta de apoyo para preparar las plantillas de
+         importación de <b>DeltaBreed</b>. <b>No forma parte del software
+         DeltaBreed</b>.</p>
+         <p>TranslatoR no se conecta, ni carga datos, ni modifica ninguna base de
+         datos de DeltaBreed. Revise siempre el archivo convertido antes de
+         importarlo en DeltaBreed.</p>
+          <div style='text-align: center; margin-top: 15px;'>
+            <img src='www/deltabreed_logo.svg' alt='DeltaBreed' style='width: 70px; height: auto;'>
           </div>"
       }
 
@@ -135,7 +141,7 @@ mod_Home_server <- function(id, lang) {
             href = "https://breedinginsight.org/contact-us/", target = "_blank",
             bs4Dash::valueBox(
               value = NULL, subtitle = lbl_contact,
-              icon = shiny::icon("envelope"), color = "danger", gradient = TRUE, width = 11
+              icon = shiny::icon("envelope"), color = "purple", gradient = TRUE, width = 11
             ),
             style = "text-decoration: none; color: inherit;"
           ),
@@ -148,9 +154,9 @@ mod_Home_server <- function(id, lang) {
             #style = "text-decoration: none; color: inherit;"
           #),
           bs4Dash::box(
-            title = bv_title, status = "warning", solidHeader = TRUE, width = 11, collapsible = FALSE,
-            shiny::HTML(bv_body),
-            style = "overflow-y: auto; height: 300px"
+            title = disc_title, status = "warning", solidHeader = TRUE, width = 11, collapsible = FALSE,
+            shiny::HTML(disc_body),
+            style = "overflow-y: auto; height: 400px"
           )
         )
       )

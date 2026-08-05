@@ -20,7 +20,7 @@ app_ui <- function(request) {
       help = NULL,    # remove the unused help toggle switch
       bs4Dash::bs4DashNavbar(
         title = shiny::tagList(
-          shiny::tags$img(src = "www/DeltaBreed_Logo_stacked.jpg", height = "55")
+          shiny::tags$img(src = "www/translator_logo_stacked.svg", height = "100")
         ),
         rightUi = shiny::tags$li(
           class = "dropdown",
@@ -62,10 +62,9 @@ app_ui <- function(request) {
           shiny::div(
             style = "display: flex; flex-direction: column; margin-right: 15px; text-align: right;",
             shiny::div("2026 Breeding Insight"),
-            shiny::div("DeltaBreed import templates")
           ),
           shiny::div(
-            shiny::tags$img(src = "www/logos2.png", height = "40px")
+            shiny::tags$img(src = "www/logos2.png", height = "65px")
           )
         ),
         left = shiny::div(
